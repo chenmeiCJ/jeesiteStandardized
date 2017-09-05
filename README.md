@@ -1,8 +1,8 @@
 # 数据元开发共享平台
 
-com.thinkgem.jeesite.modules：java代码
-src/main/resources/mapping: mybatis 映射文件
-src/webapp/WEB-INF/views/modules: 页面文件
+1. com.thinkgem.jeesite.modules：java代码
+2. src/main/resources/mapping: mybatis 映射文件
+3. src/webapp/WEB-INF/views/modules: 页面文件
 
 
 ## 版权声明
