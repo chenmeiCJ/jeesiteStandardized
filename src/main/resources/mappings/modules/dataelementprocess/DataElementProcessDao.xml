@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dataelementprocess.dao.DataElementProcessDao">
+    
+	<sql id="dataElementProcessColumns">
+		a.id AS "id",
+		a.nbbsf AS "nbbsf",
+		a.zwmc AS "zwmc",
+		a.ywmc AS "ywmc",
+		a.zwqp AS "zwqp",
+		a.bsf AS "bsf",
+		a.yj AS "yj",
+		a.bb AS "bb",
+		a.tycmc AS "tycmc",
+		a.sm AS "sm",
+		a.dxlx AS "dxlx",
+		a.txc AS "txc",
+		a.yyys AS "yyys",
+		a.flfa AS "flfa",
+		a.flfaz AS "flfaz",
+		a.gx AS "gx",
+		a.bsc AS "bsc",
+		a.sjlx AS "sjlx",
+		a.bsgs AS "bsgs",
+		a.jldw AS "jldw",
+		a.zy AS "zy",
+		a.zt AS "zt",
+		a.tjjg AS "tjjg",
+		a.zcjg AS "zcjg",
+		a.zyqcr AS "zyqcr",
+		a.pzsj AS "pzsj",
+		a.bz AS "bz",
+		a.sqlx AS "sqlx",
+		a.sqsm AS "sqsm",
+		a.lrr AS "lrr",
+		a.lxfs AS "lxfs",
+		a.lrsj AS "lrsj",
+		a.origin AS "origin",
+		a.lrdw AS "lrdw",
+		a.classify1 AS "classify1",
+		a.classify2 AS "classify2",
+		a.classify3 AS "classify3",
+		a.classify4 AS "classify4",
+		a.classify5 AS "classify5",
+		a.proc_ins_id AS "procInsId",
+		a.del_flag AS "delFlag",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id"
+	</sql>
+	
+	<sql id="dataElementProcessJoins">
+	</sql>
+    
+	<select id="get" resultType="DataElementProcess">
+		SELECT 
+			<include refid="dataElementProcessColumns"/>
+		FROM data_element_process a
+		<include refid="dataElementProcessJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DataElementProcess">
+		SELECT 
+			<include refid="dataElementProcessColumns"/>
+		FROM data_element_process a
+		<include refid="dataElementProcessJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="nbbsf != null and nbbsf != ''">
+				AND a.nbbsf = #{nbbsf}
+			</if>
+			<if test="zwmc != null and zwmc != ''">
+				AND a.zwmc = #{zwmc}
+			</if>
+			<if test="ywmc != null and ywmc != ''">
+				AND a.ywmc = #{ywmc}
+			</if>
+			<if test="zt != null and zt != ''">
+				AND a.zt = #{zt}
+			</if>
+			<if test="tjjg != null and tjjg != ''">
+				AND a.tjjg = #{tjjg}
+			</if>
+			<if test="lrr != null and lrr != ''">
+				AND a.lrr = #{lrr}
+			</if>
+			<if test="lxfs != null and lxfs != ''">
+				AND a.lxfs = #{lxfs}
+			</if>
+			<if test="lrsj != null and lrsj != ''">
+				AND a.lrsj = #{lrsj}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DataElementProcess">
+		SELECT 
+			<include refid="dataElementProcessColumns"/>
+		FROM data_element_process a
+		<include refid="dataElementProcessJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO data_element_process(
+			id,
+			nbbsf,
+			zwmc,
+			ywmc,
+			zwqp,
+			bsf,
+			yj,
+			bb,
+			tycmc,
+			sm,
+			dxlx,
+			txc,
+			yyys,
+			flfa,
+			flfaz,
+			gx,
+			bsc,
+			sjlx,
+			bsgs,
+			jldw,
+			zy,
+			zt,
+			tjjg,
+			zcjg,
+			zyqcr,
+			pzsj,
+			bz,
+			sqlx,
+			sqsm,
+			lrr,
+			lxfs,
+			lrsj,
+			origin,
+			lrdw,
+			classify1,
+			classify2,
+			classify3,
+			classify4,
+			classify5,
+			proc_ins_id,
+			del_flag,
+			create_by,
+			create_date,
+			update_date,
+			update_by
+		) VALUES (
+			#{id},
+			#{nbbsf},
+			#{zwmc},
+			#{ywmc},
+			#{zwqp},
+			#{bsf},
+			#{yj},
+			#{bb},
+			#{tycmc},
+			#{sm},
+			#{dxlx},
+			#{txc},
+			#{yyys},
+			#{flfa},
+			#{flfaz},
+			#{gx},
+			#{bsc},
+			#{sjlx},
+			#{bsgs},
+			#{jldw},
+			#{zy},
+			#{zt},
+			#{tjjg},
+			#{zcjg},
+			#{zyqcr},
+			#{pzsj},
+			#{bz},
+			#{sqlx},
+			#{sqsm},
+			#{lrr},
+			#{lxfs},
+			#{lrsj},
+			#{origin},
+			#{lrdw},
+			#{classify1},
+			#{classify2},
+			#{classify3},
+			#{classify4},
+			#{classify5},
+			#{procInsId},
+			#{delFlag},
+			#{createBy.id},
+			#{createDate},
+			#{updateDate},
+			#{updateBy.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE data_element_process SET 	
+			nbbsf = #{nbbsf},
+			zwmc = #{zwmc},
+			ywmc = #{ywmc},
+			zwqp = #{zwqp},
+			bsf = #{bsf},
+			yj = #{yj},
+			bb = #{bb},
+			tycmc = #{tycmc},
+			sm = #{sm},
+			dxlx = #{dxlx},
+			txc = #{txc},
+			yyys = #{yyys},
+			flfa = #{flfa},
+			flfaz = #{flfaz},
+			gx = #{gx},
+			bsc = #{bsc},
+			sjlx = #{sjlx},
+			bsgs = #{bsgs},
+			jldw = #{jldw},
+			zy = #{zy},
+			zt = #{zt},
+			tjjg = #{tjjg},
+			zcjg = #{zcjg},
+			zyqcr = #{zyqcr},
+			pzsj = #{pzsj},
+			bz = #{bz},
+			sqlx = #{sqlx},
+			sqsm = #{sqsm},
+			lrr = #{lrr},
+			lxfs = #{lxfs},
+			lrsj = #{lrsj},
+			origin = #{origin},
+			lrdw = #{lrdw},
+			classify1 = #{classify1},
+			classify2 = #{classify2},
+			classify3 = #{classify3},
+			classify4 = #{classify4},
+			classify5 = #{classify5},
+			proc_ins_id = #{procInsId},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE data_element_process SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

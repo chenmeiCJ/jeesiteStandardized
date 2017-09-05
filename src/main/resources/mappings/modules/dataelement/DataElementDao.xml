@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dataelement.dao.DataElementDao">
+    
+	<sql id="dataElementColumns">
+		a.id AS "id",
+		a.nbbsf AS "nbbsf",
+		a.zwmc AS "zwmc",
+		a.ywmc AS "ywmc",
+		a.zwqp AS "zwqp",
+		a.bsf AS "bsf",
+		a.yj AS "yj",
+		a.bb AS "bb",
+		a.tycmc AS "tycmc",
+		a.sm AS "sm",
+		a.dxlx AS "dxlx",
+		a.txc AS "txc",
+		a.yyys AS "yyys",
+		a.flfa AS "flfa",
+		a.flfaz AS "flfaz",
+		a.gx AS "gx",
+		a.bsc AS "bsc",
+		a.sjlx AS "sjlx",
+		a.bsgs AS "bsgs",
+		a.jldw AS "jldw",
+		a.zy AS "zy",
+		a.zt AS "zt",
+		a.tjjg AS "tjjg",
+		a.zcjg AS "zcjg",
+		a.zyqcr AS "zyqcr",
+		a.pzsj AS "pzsj",
+		a.bz AS "bz",
+		a.sqlx AS "sqlx",
+		a.sqsm AS "sqsm",
+		a.lrr AS "lrr",
+		a.lxfs AS "lxfs",
+		a.lrsj AS "lrsj",
+		a.lrdw AS "lrdw",
+		a.origin AS "origin",
+		a.classify1 AS "classify1",
+		a.classify2 AS "classify2",
+		a.classify3 AS "classify3",
+		a.classify4 AS "classify4",
+		a.classify5 AS "classify5"
+	</sql>
+	
+	<sql id="dataElementJoins">
+	</sql>
+    
+	<select id="get" resultType="DataElement">
+		SELECT 
+			<include refid="dataElementColumns"/>
+		FROM data_element a
+		<include refid="dataElementJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DataElement">
+		SELECT 
+			<include refid="dataElementColumns"/>
+		FROM data_element a
+		<include refid="dataElementJoins"/>
+		<where>
+			
+			<if test="nbbsf != null and nbbsf != ''">
+				AND a.nbbsf LIKE
+				<if test="dbName == 'mysql'">concat('%',#{nbbsf},'%')</if>
+			</if>
+			<if test="zwmc != null and zwmc != ''">
+				AND a.zwmc LIKE 
+					<if test="dbName == 'oracle'">'%'||#{zwmc}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{zwmc}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{zwmc},'%')</if>
+			</if>
+			<if test="ywmc != null and ywmc != ''">
+				AND a.ywmc LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{ywmc},'%')</if>
+			</if>
+			<if test="bsf != null and bsf != ''">
+				AND a.bsf  LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{bsf},'%')</if>
+			</if>
+			<if test="bsc != null and bsc != ''">
+				AND a.bsc LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{bsc},'%')</if>
+			</if>
+			<if test="zt != null and zt != ''">
+				AND a.zt = #{zt}
+			</if>
+			<if test="tjjg != null and tjjg != ''">
+				AND a.tjjg LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{tjjg},'%')</if>
+			</if>
+			<if test="origin != null and origin != ''">
+				AND a.origin LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{origin},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			  ORDER BY	CASE WHEN ifnull(nbbsf, '') = '' THEN 0 ELSE 1 END DESC,nbbsf ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DataElement">
+		SELECT 
+			<include refid="dataElementColumns"/>
+		FROM data_element a
+		<include refid="dataElementJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			   ORDER BY CASE WHEN ifnull(nbbsf, '') = '' THEN 0 ELSE 1 END DESC,nbbsf ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO data_element(
+			id,
+			nbbsf,
+			zwmc,
+			ywmc,
+			zwqp,
+			bsf,
+			yj,
+			bb,
+			tycmc,
+			sm,
+			dxlx,
+			txc,
+			yyys,
+			flfa,
+			flfaz,
+			gx,
+			bsc,
+			sjlx,
+			bsgs,
+			jldw,
+			zy,
+			zt,
+			tjjg,
+			zcjg,
+			zyqcr,
+			pzsj,
+			bz,
+			sqlx,
+			sqsm,
+			lrr,
+			lxfs,
+			lrsj,
+			lrdw,
+			origin,
+			classify1,
+			classify2,
+			classify3,
+			classify4,
+			classify5
+		) VALUES (
+			#{id},
+			#{nbbsf},
+			#{zwmc},
+			#{ywmc},
+			#{zwqp},
+			#{bsf},
+			#{yj},
+			#{bb},
+			#{tycmc},
+			#{sm},
+			#{dxlx},
+			#{txc},
+			#{yyys},
+			#{flfa},
+			#{flfaz},
+			#{gx},
+			#{bsc},
+			#{sjlx},
+			#{bsgs},
+			#{jldw},
+			#{zy},
+			#{zt},
+			#{tjjg},
+			#{zcjg},
+			#{zyqcr},
+			#{pzsj},
+			#{bz},
+			#{sqlx},
+			#{sqsm},
+			#{lrr},
+			#{lxfs},
+			#{lrsj},
+			#{lrdw},
+			#{origin},
+			#{classify1},
+			#{classify2},
+			#{classify3},
+			#{classify4},
+			#{classify5}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE data_element SET 	
+			nbbsf = #{nbbsf},
+			zwmc = #{zwmc},
+			ywmc = #{ywmc},
+			zwqp = #{zwqp},
+			bsf = #{bsf},
+			yj = #{yj},
+			bb = #{bb},
+			tycmc = #{tycmc},
+			sm = #{sm},
+			dxlx = #{dxlx},
+			txc = #{txc},
+			yyys = #{yyys},
+			flfa = #{flfa},
+			flfaz = #{flfaz},
+			gx = #{gx},
+			bsc = #{bsc},
+			sjlx = #{sjlx},
+			bsgs = #{bsgs},
+			jldw = #{jldw},
+			zy = #{zy},
+			zt = #{zt},
+			tjjg = #{tjjg},
+			zcjg = #{zcjg},
+			zyqcr = #{zyqcr},
+			pzsj = #{pzsj},
+			bz = #{bz},
+			sqlx = #{sqlx},
+			sqsm = #{sqsm},
+			lrr = #{lrr},
+			lxfs = #{lxfs},
+			lrsj = #{lrsj},
+			lrdw = #{lrdw},
+			origin = #{origin},
+			classify1 = #{classify1},
+			classify2 = #{classify2},
+			classify3 = #{classify3},
+			classify4 = #{classify4},
+			classify5 = #{classify5}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM data_element
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,122 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>数据元信息录入管理</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			 //$('table tr:not(:first)').remove();
+	        var len = $('table tr').length;
+	        for(var i = 1;i<len;i++){
+	            $('table tr:eq('+i+') td:first').text(i);
+	        }
+		});
+		function page(n,s){
+			$("#pageNo").val(n);
+			$("#pageSize").val(s);
+			$("#searchForm").submit();
+        	return false;
+        }
+	</script>
+</head>
+<body>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="${ctx}/dataelement/dataElement/">数据元信息录入列表</a></li>
+		<shiro:hasPermission name="dataelement:dataElement:edit"><li><a href="${ctx}/dataelement/dataElement/form">数据元信息录入添加</a></li></shiro:hasPermission>
+	</ul>
+	<form:form id="searchForm" modelAttribute="dataElement" action="${ctx}/dataelement/dataElement/" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<ul class="ul-form">
+			<li><label>内部标识符：</label>
+				<form:input path="nbbsf" htmlEscape="false" maxlength="100" class="input-medium"/>
+			</li>
+			<li><label>中文名称：</label>
+				<form:input path="zwmc" htmlEscape="false" maxlength="100" class="input-medium"/>
+			</li>
+			<li><label>英文名称：</label>
+				<form:input path="ywmc" htmlEscape="false" maxlength="100" class="input-medium"/>
+			</li>
+			<li><label>标识符：</label>
+				<form:input path="bsf" htmlEscape="false" maxlength="100" class="input-medium"/>
+			</li>
+			<li><label>表示词：</label>
+				<form:input path="bsc" htmlEscape="false" maxlength="100" class="input-medium"/>
+			</li>
+			<li><label>状态：</label>
+				<form:checkboxes path="zt" items="${fns:getDictList('dataelement_del_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+			</li>
+			<li><label>提交机构：</label>
+				<form:input path="tjjg" htmlEscape="false" maxlength="200" class="input-medium"/>
+			</li>
+			<li><label>数据来源：</label>
+				<form:input path="origin" htmlEscape="false" maxlength="200" list="originList" class="input-medium"/>
+				<datalist id="originList">
+				    <option>上饶市公安局</option>
+				    <option>南京市公安局</option>
+				    <option>公安数据元管理系统</option>
+				</datalist> 
+			</li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="clearfix"></li>
+		</ul>
+	</form:form>
+	<form:form action="${ctx}/dataelement/dataElement/download" method="post">  
+	    下载模板文件导入:  
+	    <input type="submit" class="btn btn-primary" value="下载">   
+	</form:form> 
+	<form:form action="${ctx}/dataelement/dataElement/import" method="post" enctype="multipart/form-data">  
+	    选择文件导入:<input type="file" name="file" class="input-medium"/>  
+	    <input type="submit" class="btn btn-primary" value="上传">   
+	</form:form> 
+	<sys:message content="${message}"/>
+	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+			    <th>序号</th>
+				<th>内部标识符</th>
+				<th>中文名称</th>
+				<th>版本</th>
+				<th>数据元状态</th>
+				<th>提交机构</th>
+				<th>提交时间</th>
+				<shiro:hasPermission name="dataelement:dataElement:edit"><th>操作</th></shiro:hasPermission>
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach items="${page.list}" var="dataElement">
+			<tr>
+		 	    <td>
+
+				</td>
+				<td>
+					${dataElement.nbbsf}
+				</td>
+				<td>
+					${dataElement.zwmc}
+				</td>
+				<td>
+					${dataElement.bb}
+				</td>
+				<td>
+					${dataElement.zt}
+				</td>
+				<td>
+					${dataElement.tjjg}
+				</td>
+				<td>
+					<fmt:formatDate value="${dataElement.lrsj}" pattern="yyyy-MM-dd"/>
+				</td>
+				<shiro:hasPermission name="dataelement:dataElement:edit"><td>
+					<a href="${ctx}/dataelement/dataElement/view?id=${dataElement.id}">详情</a>
+    				<a href="${ctx}/dataelement/dataElement/edit?id=${dataElement.id}">修改</a>
+					<a href="${ctx}/dataelement/dataElement/delete?id=${dataElement.id}" onclick="return confirmx('确认要删除该数据元信息录入吗？', this.href)">删除</a>
+				</td></shiro:hasPermission>
+			</tr>
+		</c:forEach>
+		</tbody>
+	</table>
+	<div class="pagination">${page}</div>
+</body>
+</html>

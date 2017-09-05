@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dataitem.dao.DataItemDao">
+    
+	<sql id="dataItemColumns">
+		a.id AS "id",
+		a.data_item_name AS "dataItemName",
+		a.data_item_identifier AS "dataItemIdentifier",
+		a.data_element_internal_identifier AS "dataElementInternalIdentifier",
+		a.data_element_ccname AS "dataElementCcname",
+		a.qualifier_internal_identifier AS "qualifierInternalIdentifier",
+		a.qualifier_ccname AS "qualifierCcname",
+		a.entry_man AS "entryMan",
+		a.entry_date AS "entryDate",
+		a.entry_unit AS "entryUnit",
+		a.contact_information AS "contactInformation",
+		a.sort AS "sort",
+		a.origin AS "origin"
+	</sql>
+	
+	<sql id="dataItemJoins">
+	</sql>
+    
+	<select id="get" resultType="DataItem">
+		SELECT 
+			<include refid="dataItemColumns"/>
+		FROM data_item a
+		<include refid="dataItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="DataItem">
+		SELECT 
+			<include refid="dataItemColumns"/>
+		FROM data_item a
+		<include refid="dataItemJoins"/>
+		<where>
+			
+			<if test="dataItemName != null and dataItemName != ''">
+				AND a.data_item_name LIKE
+				<if test="dbName == 'mysql'">concat('%',#{data_item_name},'%')</if>
+			</if>
+			<if test="dataItemIdentifier != null and dataItemIdentifier != ''">
+				AND a.data_item_identifier LIKE
+				<if test="dbName == 'mysql'">concat('%',#{data_item_identifier},'%')</if>
+			</if>
+			<if test="dataElementInternalIdentifier != null and dataElementInternalIdentifier != ''">
+				AND a.data_element_internal_identifier LIKE
+				<if test="dbName == 'mysql'">concat('%',#{data_element_internal_identifier},'%')</if>
+			</if>
+			<if test="dataElementCcname != null and dataElementCcname != ''">
+				AND a.data_element_ccname LIKE
+				<if test="dbName == 'mysql'">concat('%',#{data_element_ccname},'%')</if>
+			</if>
+			<if test="qualifierInternalIdentifier != null and qualifierInternalIdentifier != ''">
+				AND a.qualifier_internal_identifier LIKE
+				<if test="dbName == 'mysql'">concat('%',#{qualifier_internal_identifier},'%')</if>
+			</if>
+			<if test="qualifierCcname != null and qualifierCcname != ''">
+				AND a.qualifier_ccname LIKE
+				<if test="dbName == 'mysql'">concat('%',#{qualifier_ccname},'%')</if>
+			</if>
+			<if test="entryDate != null and entryDate != ''">
+				AND a.entry_date LIKE
+				<if test="dbName == 'mysql'">concat('%',#{entry_date},'%')</if>
+			</if>
+			<if test="entryUnit != null and entryUnit != ''">
+				AND a.entry_unit LIKE
+				<if test="dbName == 'mysql'">concat('%',#{entry_unit},'%')</if>
+			</if>
+			<if test="origin != null and origin != ''">
+				AND a.origin LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{origin},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			    ORDER BY sort
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DataItem">
+		SELECT 
+			<include refid="dataItemColumns"/>
+		FROM data_item a
+		<include refid="dataItemJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			   ORDER BY sort
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO data_item(
+			id,
+			data_item_name,
+			data_item_identifier,
+			data_element_internal_identifier,
+			data_element_ccname,
+			qualifier_internal_identifier,
+			qualifier_ccname,
+			entry_man,
+			entry_date,
+			entry_unit,
+			contact_information,
+			sort,
+			origin
+		) VALUES (
+			#{id},
+			#{dataItemName},
+			#{dataItemIdentifier},
+			#{dataElementInternalIdentifier},
+			#{dataElementCcname},
+			#{qualifierInternalIdentifier},
+			#{qualifierCcname},
+			#{entryMan},
+			#{entryDate},
+			#{entryUnit},
+			#{contactInformation},
+			#{sort},
+			#{origin}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE data_item SET 	
+			data_item_name = #{dataItemName},
+			data_item_identifier = #{dataItemIdentifier},
+			data_element_internal_identifier = #{dataElementInternalIdentifier},
+			data_element_ccname = #{dataElementCcname},
+			qualifier_internal_identifier = #{qualifierInternalIdentifier},
+			qualifier_ccname = #{qualifierCcname},
+			entry_man = #{entryMan},
+			entry_date = #{entryDate},
+			entry_unit = #{entryUnit},
+			contact_information = #{contactInformation},
+			sort = #{sort},
+			origin = #{origin}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM data_item
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMaxSort" resultType="java.lang.Integer" >
+		select max(sort) from data_item
+	</select>
+</mapper>

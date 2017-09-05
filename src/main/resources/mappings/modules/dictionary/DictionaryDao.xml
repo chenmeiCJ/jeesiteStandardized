@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dictionary.dao.DictionaryDao">
+    
+	<sql id="dictionaryColumns">
+		a.id AS "id",
+		a.ccname AS "ccname",
+		a.remark AS "remark",
+		a.internal_identifier AS "internalIdentifier",
+		a.instruction AS "instruction",
+		a.version AS "version",
+		a.state AS "state",
+		a.normative_reference_file AS "normativeReferenceFile",
+		a.terms_and_definitions AS "termsAndDefinitions",
+		a.classification_principle AS "classificationPrinciple",
+		a.coding_method AS "codingMethod",
+		a.draftman AS "draftman",
+		a.standard_number AS "standardNumber",
+		a.submitting_body AS "submittingBody",
+		a.release_date AS "releaseDate",
+		a.entry_man AS "entryMan",
+		a.entry_unit AS "entryUnit",
+		a.contact_information AS "contactInformation",
+		a.entry_time AS "entryTime",
+		a.origin AS "origin"
+	</sql>
+	
+	<sql id="dictionaryJoins">
+	</sql>
+    
+	<select id="get" resultType="Dictionary">
+		SELECT 
+			<include refid="dictionaryColumns"/>
+		FROM dictionary a
+		<include refid="dictionaryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Dictionary">
+		SELECT 
+			<include refid="dictionaryColumns"/>
+		FROM dictionary a
+		<include refid="dictionaryJoins"/>
+		<where>
+			
+			<if test="ccname != null and ccname != ''">
+				AND a.ccname LIKE
+				<if test="dbName == 'mysql'">concat('%',#{ccname})</if>
+			</if>
+			<if test="remark != null and remark != ''">
+				AND a.remark LIKE
+				<if test="dbName == 'mysql'">concat('%',#{remark})</if>
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state LIKE
+				<if test="dbName == 'mysql'">concat('%',#{state})</if>
+			</if>
+			<if test="draftman != null and draftman != ''">
+				AND a.draftman LIKE 
+				<if test="dbName == 'mysql'">concat('%',#{draftman})</if>
+			</if>
+			<if test="submittingBody != null and submittingBody != ''">
+				AND a.submitting_body LIKE
+				<if test="dbName == 'mysql'">concat('%',#{submitting_body})</if>
+			</if>
+			<if test="entryTime != null and entryTime != ''">
+				AND a.entry_time LIKE
+				<if test="dbName == 'mysql'">concat('%',#{entry_time})</if>
+			</if>
+			<if test="origin != null and origin != ''">
+				AND a.origin LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{origin},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Dictionary">
+		SELECT 
+			<include refid="dictionaryColumns"/>
+		FROM dictionary a
+		<include refid="dictionaryJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dictionary(
+			id,
+			ccname,
+			remark,
+			internal_identifier,
+			instruction,
+			version,
+			state,
+			normative_reference_file,
+			terms_and_definitions,
+			classification_principle,
+			coding_method,
+			draftman,
+			standard_number,
+			submitting_body,
+			release_date,
+			entry_man,
+			entry_unit,
+			contact_information,
+			entry_time,
+			origin
+		) VALUES (
+			#{id},
+			#{ccname},
+			#{remark},
+			#{internalIdentifier},
+			#{instruction},
+			#{version},
+			#{state},
+			#{normativeReferenceFile},
+			#{termsAndDefinitions},
+			#{classificationPrinciple},
+			#{codingMethod},
+			#{draftman},
+			#{standardNumber},
+			#{submittingBody},
+			#{releaseDate},
+			#{entryMan},
+			#{entryUnit},
+			#{contactInformation},
+			#{entryTime},
+			#{origin}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dictionary SET 	
+			ccname = #{ccname},
+			remark = #{remark},
+			internal_identifier = #{internalIdentifier},
+			instruction = #{instruction},
+			version = #{version},
+			state = #{state},
+			normative_reference_file = #{normativeReferenceFile},
+			terms_and_definitions = #{termsAndDefinitions},
+			classification_principle = #{classificationPrinciple},
+			coding_method = #{codingMethod},
+			draftman = #{draftman},
+			standard_number = #{standardNumber},
+			submitting_body = #{submittingBody},
+			release_date = #{releaseDate},
+			entry_man = #{entryMan},
+			entry_unit = #{entryUnit},
+			contact_information = #{contactInformation},
+			entry_time = #{entryTime},
+			origin=#{origin}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dictionary
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

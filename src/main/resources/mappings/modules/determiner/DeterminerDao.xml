@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.determiner.dao.DeterminerDao">
+    
+	<sql id="determinerColumns">
+		a.id AS "id",
+		a.internal_identifier AS "internalIdentifier",
+		a.identifier AS "identifier",
+		a.ccname AS "ccname",
+		a.statue AS "statue",
+		a.submission_date AS "submissionDate",
+		a.remark AS "remark",
+		a.entry_man AS "entryMan",
+		a.entry_unit AS "entryUnit",
+		a.entry_date AS "entryDate",
+		a.contact_information AS "contactInformation",
+		a.origin AS "origin"
+	</sql>
+	
+	<sql id="determinerJoins">
+	</sql>
+    
+	<select id="get" resultType="Determiner">
+		SELECT 
+			<include refid="determinerColumns"/>
+		FROM determiner a
+		<include refid="determinerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Determiner">
+		SELECT 
+			<include refid="determinerColumns"/>
+		FROM determiner a
+		<include refid="determinerJoins"/>
+		<where>
+			
+			<if test="internalIdentifier != null and internalIdentifier != ''">
+				AND a.internal_identifier LIKE
+				<if test="dbName == 'mysql'">concat('%',#{internal_identifier},'%')</if>
+			</if>
+			<if test="identifier != null and identifier != ''">
+				AND a.identifier LIKE
+				<if test="dbName == 'mysql'">concat('%',#{identifier},'%')</if>
+			</if>
+			<if test="ccname != null and ccname != ''">
+				AND a.ccname LIKE
+				<if test="dbName == 'mysql'">concat('%',#{ccname},'%')</if>
+			</if>
+			<if test="statue != null and statue != ''">
+				AND a.statue LIKE
+				<if test="dbName == 'mysql'">concat('%',#{statue},'%')</if>
+			</if>
+			<if test="submissionDate != null and submissionDate != ''">
+				AND a.submission_date LIKE
+				<if test="dbName == 'mysql'">concat('%',#{submission_date},'%')</if>
+			</if>
+			<if test="entryUnit != null and entryUnit != ''">
+				AND a.entry_unit LIKE
+				<if test="dbName == 'mysql'">concat('%',#{entry_unit},'%')</if>
+			</if>
+			<if test="origin != null and origin != ''">
+				AND a.origin LIKE
+				   <if test="dbName == 'mysql'">concat('%',#{origin},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Determiner">
+		SELECT 
+			<include refid="determinerColumns"/>
+		FROM determiner a
+		<include refid="determinerJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO determiner(
+			id,
+			internal_identifier,
+			identifier,
+			ccname,
+			statue,
+			submission_date,
+			remark,
+			entry_man,
+			entry_unit,
+			entry_date,
+			contact_information,
+			origin
+		) VALUES (
+			#{id},
+			#{internalIdentifier},
+			#{identifier},
+			#{ccname},
+			#{statue},
+			#{submissionDate},
+			#{remark},
+			#{entryMan},
+			#{entryUnit},
+			#{entryDate},
+			#{contactInformation},
+			#{origin}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE determiner SET 	
+			internal_identifier = #{internalIdentifier},
+			identifier = #{identifier},
+			ccname = #{ccname},
+			statue = #{statue},
+			submission_date = #{submissionDate},
+			remark = #{remark},
+			entry_man = #{entryMan},
+			entry_unit = #{entryUnit},
+			entry_date = #{entryDate},
+			contact_information = #{contactInformation},
+			origin=#{origin}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM determiner
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

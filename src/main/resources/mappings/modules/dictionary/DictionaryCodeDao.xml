@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dictionary.dao.DictionaryCodeDao">
+    
+	<sql id="dictionaryCodeColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.code AS "code",
+		a.pid AS "pid",
+		a.dic_id AS "dicId",
+		a.type AS "type",
+		a.classic AS "classic",
+		a.remark AS "remark"
+	</sql>
+	
+	<sql id="dictionaryCodeJoins">
+		LEFT JOIN dictionary b ON b.id = a.dic_id
+	</sql>
+    
+	<select id="get" resultType="DictionaryCode">
+		SELECT 
+			<include refid="dictionaryCodeColumns"/>
+		FROM dictionary_code a
+		<include refid="dictionaryCodeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="DictionaryCode">
+		SELECT 
+			<include refid="dictionaryCodeColumns"/>
+		FROM dictionary_code a
+		<include refid="dictionaryCodeJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="dicId != null and dicId != ''">
+				AND a.dic_id = #{dicId}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND a.remark = #{remark}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="DictionaryCode">
+		SELECT 
+			<include refid="dictionaryCodeColumns"/>
+		FROM dictionary_code a
+		<include refid="dictionaryCodeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO dictionary_code(
+			id,
+			name,
+			code,
+			pid,
+			dic_id,
+			type,
+			classic,
+			remark
+		) VALUES (
+			#{id},
+			#{name},
+			#{code},
+			#{pid},
+			#{dicId},
+			#{type},
+			#{classic},
+			#{remark}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE dictionary_code SET 	
+			name = #{name},
+			code = #{code},
+			pid = #{pid},
+			dic_id = #{dicId},
+			type = #{type},
+			classic = #{classic},
+			remark = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM dictionary_code
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE dic_id = #{dicId}
+			</otherwise>
+		</choose>
+	</update>
+	
+</mapper>
